@@ -11,6 +11,7 @@ fn chrono() {
         bar: DateTime<Utc>,
     }
 
+    //
     assert_eq!(
         serde_json::from_str::<Foo>("{}").unwrap().bar.timestamp(),
         0
