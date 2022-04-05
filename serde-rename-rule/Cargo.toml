@@ -1,0 +1,24 @@
+[package]
+name = "serde-rename-rule"
+version = "0.1.1"
+authors = ["vkill <vkill.net@gmail.com>"]
+edition = "2018"
+description = "Serde RenameRule"
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/bk-rs/serde-rename-rule"
+homepage = "https://github.com/bk-rs/serde-rename-rule"
+documentation = "https://docs.rs/serde-rename-rule"
+keywords = []
+categories = []
+readme = "README.md"
+
+[features]
+_rustversion_before_1_26_0 = ["rustversion"]
+
+[dependencies]
+rustversion = { version = "1.0", default-features = false, optional = true }
+
+[package.metadata.cargo-all-features]
+skip_feature_sets = [
+    ["_rustversion_before_1_26_0"],
+]

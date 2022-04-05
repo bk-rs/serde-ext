@@ -1,0 +1,51 @@
+[package]
+name = "serde-attributes"
+version = "0.1.1"
+authors = ["vkill <vkill.net@gmail.com>"]
+edition = "2018"
+description = "Serde Attributes"
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/bk-rs/serde-attributes"
+homepage = "https://github.com/bk-rs/serde-attributes"
+documentation = "https://docs.rs/serde-attributes"
+keywords = []
+categories = []
+readme = "README.md"
+
+[package.metadata.docs.rs]
+features = [ "all-attrs", "with-syn", "with-darling" ]
+
+[features]
+default = [ "all-attrs", "with-syn" ]
+
+all-attrs = [ "attr-alias", "attr-rename", "attr-rename-all" ]
+attr-alias = []
+attr-rename = []
+attr-rename-all = [ "attr-rename", "serde-rename-rule" ]
+
+with-syn = [ "syn" ]
+with-darling = [ "with-syn", "darling_core" ]
+
+_integration_tests = [ "all-attrs", "with-syn", "with-darling" ]
+
+[dependencies]
+syn = { version = "1.0", default-features = false, features = [ "derive", "parsing" ], optional = true }
+darling_core = { version = "0.13", default-features = false, optional = true }
+
+# attr-rename-all
+serde-rename-rule = { version = "0.1.1", default-features = false, optional = true }
+
+[dev-dependencies]
+serde = { version = "1.0", features = ["derive"] }
+darling = { version = "0.13", default-features = false }
+
+[package.metadata.cargo-all-features]
+skip_feature_sets = [
+    ["with-syn", "with-darling"],
+    ["attr-alias", "attr-rename"],
+    ["attr-alias", "attr-rename-all"],
+    ["attr-alias", "attr-rename", "attr-rename-all"],
+    # 
+    ["_integration_tests"],
+]
+skip_optional_dependencies = true
