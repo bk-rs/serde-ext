@@ -24,10 +24,8 @@ pub fn deserialize<'de, D>(d: D) -> Result<Option<DateTime<Utc>>, D::Error>
 where
     D: de::Deserializer<'de>,
 {
-    Ok(
-        d.deserialize_option(OptionFloatMicroSecondsTimestampVisitor)
-            .map(|opt| opt.map(|dt| dt.with_timezone(&Utc)))?,
-    )
+    d.deserialize_option(OptionFloatMicroSecondsTimestampVisitor)
+        .map(|opt| opt.map(|dt| dt.with_timezone(&Utc)))
 }
 
 impl<'de> de::Visitor<'de> for OptionFloatMicroSecondsTimestampVisitor {

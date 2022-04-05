@@ -19,8 +19,8 @@ pub fn deserialize<'de, D>(d: D) -> Result<DateTime<Utc>, D::Error>
 where
     D: de::Deserializer<'de>,
 {
-    Ok(d.deserialize_i64(MicroSecondsTimestampVisitor)
-        .map(|dt| dt.with_timezone(&Utc))?)
+    d.deserialize_i64(MicroSecondsTimestampVisitor)
+        .map(|dt| dt.with_timezone(&Utc))
 }
 
 impl<'de> de::Visitor<'de> for MicroSecondsTimestampVisitor {

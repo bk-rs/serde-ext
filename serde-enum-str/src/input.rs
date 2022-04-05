@@ -113,7 +113,7 @@ fn parse_variant(enum_variant: &EnumVariant) -> Result<Variant, SynError> {
 
 fn parse_default_variant(enum_variant: &EnumVariant) -> Result<DefaultVariant, SynError> {
     if enum_variant.fields.is_tuple() {
-        let mut types_iter = enum_variant.fields.to_owned().into_iter();
+        let mut types_iter = enum_variant.fields.iter().cloned();
         let r#type = types_iter
             .next()
             .ok_or_else(|| SynError::new(enum_variant.ident.span(), "must be at least one type"))?;
@@ -141,7 +141,9 @@ fn parse_default_variant(enum_variant: &EnumVariant) -> Result<DefaultVariant, S
 #[derive(FromDeriveInput, Debug)]
 #[darling(attributes(serde), forward_attrs(doc))]
 struct EnumDeriveInput {
+    #[allow(dead_code)]
     attrs: Vec<Attribute>,
+    #[allow(dead_code)]
     vis: Visibility,
     ident: Ident,
     generics: Generics,
@@ -154,9 +156,11 @@ struct EnumDeriveInput {
 #[derive(FromVariant, Debug)]
 #[darling(attributes(serde), forward_attrs(doc))]
 struct EnumVariant {
+    #[allow(dead_code)]
     attrs: Vec<Attribute>,
     ident: Ident,
     fields: Fields<Type>,
+    #[allow(dead_code)]
     discriminant: Option<Expr>,
 
     #[darling(default)]
