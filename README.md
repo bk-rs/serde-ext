@@ -10,4 +10,6 @@ cargo build-all-features
 cargo test-all-features -- --nocapture
 
 cargo test -p serde-field-default --features alloc,chrono,chrono-tz -- --nocapture
+
+cargo test -p serde-attributes --features _integration_tests --test integration_tests -- --nocapture
 ```
