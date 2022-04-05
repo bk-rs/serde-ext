@@ -1,6 +1,6 @@
 [package]
 name = "serde-enum-str"
-version = "0.2.4"
+version = "0.2.5"
 authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2021"
 description = "Serialize and deserialize enum string"
@@ -20,7 +20,7 @@ proc-macro2 = { version = "1.0", default-features = false }
 quote = { version = "1.0", default-features = false }
 syn = { version = "1.0", default-features = false, features = ["parsing", "proc-macro", "derive"] }
 darling = { version = "0.13", default-features = false }
-serde-attributes = { version = "0.1.1", default-features = false, features = ["attr-alias", "attr-rename", "attr-rename-all", "with-darling"] }
+serde-attributes = { version = "0.1.2", default-features = false, features = ["attr-alias", "attr-rename", "attr-rename-all", "with-darling"], path = "../serde-attributes" }
 
 [dev-dependencies]
 serde = { version = "1.0", features = ["derive"] }
