@@ -17,8 +17,8 @@ all-features = true
 
 [features]
 default = ["std"]
-std = ["alloc"]
-alloc = []
+std = ["alloc", "serde/std"]
+alloc = ["serde/alloc"]
 
 [dependencies]
 serde = { version = "1.0", default-features = false }
