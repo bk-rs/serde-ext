@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "serde-attributes",
+    "serde-aux-ext",
     "serde-datetime",
     "serde-enum-str",
     "serde-field-default",
