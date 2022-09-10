@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2018 Victor Polevoy. All Rights Reserved.
+
+Distributed under MIT license. See https://github.com/vityafx/serde-aux/blob/master/LICENSE for detail.
+*/
+
 use serde::{Deserialize, Deserializer};
 
 //
