@@ -14,7 +14,7 @@ readme = "README.md"
 
 [dependencies]
 serde = { version = "1.0" }
-chrono = { version = "<=0.4.19", default-features = false, features = ["clock"] }
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
 
 [dev-dependencies]
 serde = { version = "1.0", features = ["derive"] }

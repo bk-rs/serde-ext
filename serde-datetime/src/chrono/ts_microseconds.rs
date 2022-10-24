@@ -3,7 +3,6 @@ use core::fmt;
 use chrono::{DateTime, TimeZone as _, Utc};
 use serde::{de, ser};
 
-use super::ext::DTTimestampMicrosExt as _;
 use super::lib_copy::serde_from;
 
 pub(crate) struct MicroSecondsTimestampVisitor;

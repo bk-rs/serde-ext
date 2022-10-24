@@ -3,8 +3,6 @@ use core::fmt;
 use chrono::{DateTime, Utc};
 use serde::{de, ser};
 
-use super::ext::DTTimestampMicrosExt as _;
-
 pub(super) struct OptionMicroSecondsTimestampVisitor;
 use super::ts_microseconds::MicroSecondsTimestampVisitor;
 
