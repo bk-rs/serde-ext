@@ -9,6 +9,9 @@ use syn::{
     parse::{Parse, ParseStream},
     Attribute, DeriveInput, Error as SynError, Expr, Generics, Ident, Type, Visibility,
 };
+use alloc::borrow::ToOwned;
+use alloc::{vec, vec::Vec};
+use alloc::format;
 
 pub struct Input {
     pub ident: Ident,

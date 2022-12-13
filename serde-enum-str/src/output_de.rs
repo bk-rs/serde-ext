@@ -1,5 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote, ToTokens, TokenStreamExt as _};
+use alloc::vec::Vec;
 
 use super::{
     input::Input,
@@ -110,10 +111,10 @@ impl ToTokens for InputWrapper {
 
         //
         let token = quote! {
-            impl ::core::convert::TryFrom<::std::string::String> for #impl_ident {
+            impl ::core::convert::TryFrom<::alloc::string::String> for #impl_ident {
                 type Error = serde::de::value::Error;
 
-                fn try_from(value: ::std::string::String) -> ::core::result::Result<Self, Self::Error> {
+                fn try_from(value: ::alloc::string::String) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()
                 }
             }

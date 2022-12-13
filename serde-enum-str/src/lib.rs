@@ -34,10 +34,11 @@
 //!     Ok(())
 //! }
 //! ```
-
+#![cfg_attr(not(feature = "std"), no_std)]
 #![allow(clippy::single_match_else)]
 
 extern crate proc_macro;
+extern crate alloc;
 
 use proc_macro::TokenStream;
 use quote::quote;
