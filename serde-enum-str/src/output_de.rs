@@ -111,10 +111,10 @@ impl ToTokens for InputWrapper {
 
         //
         let token = quote! {
-            impl ::core::convert::TryFrom<::alloc::string::String> for #impl_ident {
+            impl ::core::convert::TryFrom<String> for #impl_ident {
                 type Error = serde::de::value::Error;
 
-                fn try_from(value: ::alloc::string::String) -> ::core::result::Result<Self, Self::Error> {
+                fn try_from(value: String) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()
                 }
             }
