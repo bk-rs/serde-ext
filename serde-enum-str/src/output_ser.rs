@@ -1,5 +1,7 @@
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens, TokenStreamExt as _};
+use alloc::string::ToString;
+use alloc::vec::Vec;
 
 use super::{
     input::Input,
