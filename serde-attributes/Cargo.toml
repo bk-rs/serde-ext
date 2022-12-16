@@ -34,7 +34,7 @@ syn = { version = "1", default-features = false, features = [ "derive", "parsing
 darling_core = { version = "0.14", default-features = false, optional = true }
 
 # attr-rename-all
-serde-rename-rule = { version = "0.1.2", default-features = false, optional = true, path = "../serde-rename-rule" }
+serde-rename-rule = { version = "0.2", default-features = false, optional = true, path = "../serde-rename-rule" }
 
 [dev-dependencies]
 serde = { version = "1", features = ["derive"] }
