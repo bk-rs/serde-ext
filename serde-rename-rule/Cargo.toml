@@ -11,6 +11,7 @@ documentation = "https://docs.rs/serde-rename-rule"
 keywords = []
 categories = []
 readme = "README.md"
+rust-version = "1.58.0"
 
 [features]
 _rustversion_before_1_26_0 = ["rustversion"]
