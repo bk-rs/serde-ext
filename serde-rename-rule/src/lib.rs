@@ -4,8 +4,6 @@
 
 extern crate alloc;
 
-use core::{convert::TryFrom, str::FromStr};
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum RenameRule {
     /// Rename direct children to "lowercase" style.
@@ -118,14 +116,14 @@ impl RenameRule {
     }
 }
 
-impl FromStr for RenameRule {
+impl core::str::FromStr for RenameRule {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Self::from_rename_all_str(s)
     }
 }
-impl TryFrom<&str> for RenameRule {
+impl core::convert::TryFrom<&str> for RenameRule {
     type Error = ParseError;
 
     fn try_from(s: &str) -> Result<Self, Self::Error> {
@@ -172,6 +170,9 @@ impl std::error::Error for ParseError {}
 mod tests {
     use super::*;
 
+    use alloc::string::ToString as _;
+    use core::str::FromStr as _;
+
     use RenameRule::*;
 
     #[test]
@@ -193,7 +194,7 @@ mod tests {
         assert_eq!(RenameRule::from_str(name).unwrap(), *rule);
         assert_eq!(name.parse::<RenameRule>().unwrap(), *rule);
         assert_eq!(RenameRule::try_from(*name).unwrap(), *rule);
-        assert_eq!(alloc::string::ToString::to_string(rule), *name);
+        assert_eq!(rule.to_string(), *name);
     }
 
     #[test]
