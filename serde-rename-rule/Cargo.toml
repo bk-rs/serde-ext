@@ -16,7 +16,7 @@ readme = "README.md"
 _rustversion_before_1_26_0 = ["rustversion"]
 
 [dependencies]
-rustversion = { version = "1.0", default-features = false, optional = true }
+rustversion = { version = "1", default-features = false, optional = true }
 
 [package.metadata.cargo-all-features]
 skip_feature_sets = [
