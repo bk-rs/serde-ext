@@ -1,13 +1,12 @@
 //! Serde RenameRule. [Extract from](https://github.com/serde-rs/serde/blob/v1.0.126/serde_derive/src/internals/case.rs)
 //!
+#![cfg_attr(not(feature = "std"), no_std)]
 
-use std::{convert::TryFrom, error, fmt, str::FromStr};
+extern crate alloc;
 
-#[cfg(feature = "rustversion")]
-#[rustversion::before(1.26.0)]
-use std::ascii::AsciiExt as _;
+use core::{convert::TryFrom, str::FromStr};
 
-#[derive(PartialEq, Eq, Hash, Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum RenameRule {
     /// Rename direct children to "lowercase" style.
     LowerCase,
@@ -45,10 +44,10 @@ impl RenameRule {
     pub fn from_rename_all_str(s: &str) -> Result<Self, ParseError> {
         for (name, rule) in RENAME_RULES {
             if s == *name {
-                return Ok(rule.to_owned());
+                return Ok(*rule);
             }
         }
-        Err(ParseError::Unknown(s.to_owned()))
+        Err(ParseError::Unknown(s.into()))
     }
     pub fn to_rename_all_str(&self) -> &'static str {
         for (name, rule) in RENAME_RULES {
@@ -60,14 +59,14 @@ impl RenameRule {
     }
 
     /// Apply a renaming rule to an enum variant, returning the version expected in the source.
-    pub fn apply_to_variant(&self, variant: &str) -> String {
+    pub fn apply_to_variant(&self, variant: &str) -> alloc::string::String {
         match *self {
-            Self::PascalCase => variant.to_owned(),
+            Self::PascalCase => variant.into(),
             Self::LowerCase => variant.to_ascii_lowercase(),
             Self::UpperCase => variant.to_ascii_uppercase(),
             Self::CamelCase => variant[..1].to_ascii_lowercase() + &variant[1..],
             Self::SnakeCase => {
-                let mut snake = String::new();
+                let mut snake = alloc::string::String::new();
                 for (i, ch) in variant.char_indices() {
                     if i > 0 && ch.is_uppercase() {
                         snake.push('_');
@@ -87,12 +86,12 @@ impl RenameRule {
     }
 
     /// Apply a renaming rule to a struct field, returning the version expected in the source.
-    pub fn apply_to_field(&self, field: &str) -> String {
+    pub fn apply_to_field(&self, field: &str) -> alloc::string::String {
         match *self {
-            Self::LowerCase | Self::SnakeCase => field.to_owned(),
+            Self::LowerCase | Self::SnakeCase => field.into(),
             Self::UpperCase => field.to_ascii_uppercase(),
             Self::PascalCase => {
-                let mut pascal = String::new();
+                let mut pascal = alloc::string::String::new();
                 let mut capitalize = true;
                 for ch in field.chars() {
                     if ch == '_' {
@@ -133,8 +132,8 @@ impl TryFrom<&str> for RenameRule {
         s.parse()
     }
 }
-impl fmt::Display for RenameRule {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl core::fmt::Display for RenameRule {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "{}", self.to_rename_all_str())
     }
 }
@@ -142,31 +141,32 @@ impl fmt::Display for RenameRule {
 //
 #[derive(Debug)]
 pub enum ParseError {
-    Unknown(String),
+    Unknown(alloc::string::String),
 }
 
 impl ParseError {
-    pub fn msg_for_rename_all(&self) -> String {
+    pub fn msg_for_rename_all(&self) -> alloc::string::String {
         match self {
-            Self::Unknown(s) => format!(
+            Self::Unknown(s) => alloc::format!(
                 r#"unknown rename rule `rename_all = "{}"`, expected one of {}"#,
                 s,
                 RENAME_RULES
                     .iter()
-                    .map(|(name, _)| format!(r#""{name}""#))
-                    .collect::<Vec<_>>()
+                    .map(|(name, _)| alloc::format!(r#""{name}""#))
+                    .collect::<alloc::vec::Vec<_>>()
                     .join(", ")
             ),
         }
     }
 }
 
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl core::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "{self:?}")
     }
 }
-impl error::Error for ParseError {}
+#[cfg(feature = "std")]
+impl std::error::Error for ParseError {}
 
 #[cfg(test)]
 mod tests {
@@ -188,14 +188,12 @@ mod tests {
     }
 
     #[test]
-    fn test_impl_trait() -> Result<(), Box<dyn error::Error>> {
-        let (name, rule) = RENAME_RULES.first().unwrap().to_owned();
-        assert_eq!(RenameRule::from_str(name)?, rule);
-        assert_eq!(name.parse::<RenameRule>()?, rule);
-        assert_eq!(RenameRule::try_from(name)?, rule);
-        assert_eq!(rule.to_string(), name);
-
-        Ok(())
+    fn test_impl_trait() {
+        let (name, rule) = RENAME_RULES.first().unwrap();
+        assert_eq!(RenameRule::from_str(name).unwrap(), *rule);
+        assert_eq!(name.parse::<RenameRule>().unwrap(), *rule);
+        assert_eq!(RenameRule::try_from(*name).unwrap(), *rule);
+        assert_eq!(alloc::string::ToString::to_string(rule), *name);
     }
 
     #[test]

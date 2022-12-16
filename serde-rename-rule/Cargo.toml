@@ -13,13 +13,11 @@ categories = []
 readme = "README.md"
 rust-version = "1.58.0"
 
+[package.metadata.docs.rs]
+all-features = true
+
 [features]
-_rustversion_before_1_26_0 = ["rustversion"]
+default = ["std"]
+std = []
 
 [dependencies]
-rustversion = { version = "1", default-features = false, optional = true }
-
-[package.metadata.cargo-all-features]
-skip_feature_sets = [
-    ["_rustversion_before_1_26_0"],
-]
