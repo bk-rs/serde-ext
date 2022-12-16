@@ -65,7 +65,7 @@ impl<'de> de::Visitor<'de> for OptionFloatMicroSecondsTimestampVisitor {
 mod tests {
     use std::error::Error;
 
-    use chrono::{DateTime, TimeZone as _, Utc};
+    use chrono::{DateTime, NaiveDate, Utc};
     use serde::{Deserialize, Serialize};
     use serde_json::json;
 
@@ -86,21 +86,51 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200.999999 }"#)?;
         assert_eq!(
             s.time,
-            Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 999999))
+            Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 999999)
+                    .expect(""),
+                Utc
+            ))
         );
 
         let s: S = serde_json::from_str(r#"{ "time": 1609459200 }"#)?;
-        assert_eq!(s.time, Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 0)));
+        assert_eq!(
+            s.time,
+            Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 0)
+                    .expect(""),
+                Utc
+            ))
+        );
 
         let s: S = serde_json::from_str(r#"{ "time": 1609459200.000001 }"#)?;
-        assert_eq!(s.time, Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 1)));
+        assert_eq!(
+            s.time,
+            Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 1)
+                    .expect(""),
+                Utc
+            ))
+        );
 
         //
         let s = S { time: None };
         assert_eq!(serde_json::to_value(&s)?, json!({ "time": null }));
 
         let s = S {
-            time: Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 999999)),
+            time: Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 999999)
+                    .expect(""),
+                Utc,
+            )),
         };
         assert_eq!(
             serde_json::to_value(&s)?,
@@ -108,7 +138,13 @@ mod tests {
         );
 
         let s = S {
-            time: Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 0)),
+            time: Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 0)
+                    .expect(""),
+                Utc,
+            )),
         };
         assert_eq!(
             serde_json::to_value(&s)?,
@@ -116,7 +152,13 @@ mod tests {
         );
 
         let s = S {
-            time: Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 1)),
+            time: Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 1)
+                    .expect(""),
+                Utc,
+            )),
         };
         assert_eq!(
             serde_json::to_value(&s)?,

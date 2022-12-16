@@ -60,7 +60,7 @@ impl<'de> de::Visitor<'de> for OptionMicroSecondsTimestampVisitor {
 mod tests {
     use std::error::Error;
 
-    use chrono::{DateTime, TimeZone as _, Utc};
+    use chrono::{DateTime, NaiveDate, Utc};
     use serde::{Deserialize, Serialize};
     use serde_json::json;
 
@@ -81,7 +81,13 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200999999 }"#)?;
         assert_eq!(
             s.time,
-            Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 999999))
+            Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 999999)
+                    .expect(""),
+                Utc
+            ))
         );
 
         //
@@ -89,7 +95,13 @@ mod tests {
         assert_eq!(serde_json::to_value(&s)?, json!({ "time": null }));
 
         let s = S {
-            time: Some(Utc.ymd(2021, 1, 1).and_hms_micro(0, 0, 0, 999999)),
+            time: Some(DateTime::from_utc(
+                NaiveDate::from_ymd_opt(2021, 1, 1)
+                    .expect("")
+                    .and_hms_micro_opt(0, 0, 0, 999999)
+                    .expect(""),
+                Utc,
+            )),
         };
         assert_eq!(
             serde_json::to_value(&s)?,
