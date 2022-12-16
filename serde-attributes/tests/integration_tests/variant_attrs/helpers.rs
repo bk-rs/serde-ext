@@ -19,7 +19,7 @@ pub fn parse_serde_meta_list(input: &str) -> Vec<Meta> {
             nested: _,
         }) if path.is_ident("derive") => {}
         meta => {
-            println!("{:?}", meta);
+            println!("{meta:?}");
             panic!()
         }
     }
@@ -42,14 +42,14 @@ pub fn parse_serde_meta_list(input: &str) -> Vec<Meta> {
                         _ => panic!(),
                     },
                     meta => {
-                        println!("{:?}", meta);
+                        println!("{meta:?}");
                         panic!()
                     }
                 })
                 .collect()
         }
         data => {
-            println!("{:?}", data);
+            println!("{data:?}");
             panic!()
         }
     }

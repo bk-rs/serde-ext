@@ -1,7 +1,7 @@
+use alloc::vec::Vec;
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote, ToTokens, TokenStreamExt as _};
 use syn::Ident;
-use alloc::vec::Vec;
 
 use super::input::Input;
 

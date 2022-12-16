@@ -12,7 +12,7 @@ pub fn parse_serde_meta(input: &str) -> Meta {
             nested: _,
         }) if path.is_ident("derive") => {}
         meta => {
-            println!("{:?}", meta);
+            println!("{meta:?}");
             panic!()
         }
     }
@@ -26,7 +26,7 @@ pub fn parse_serde_meta(input: &str) -> Meta {
             _ => panic!(),
         },
         meta => {
-            println!("{:?}", meta);
+            println!("{meta:?}");
             panic!()
         }
     }
