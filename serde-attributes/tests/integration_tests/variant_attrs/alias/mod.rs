@@ -3,7 +3,7 @@ mod examples;
 //
 //
 //
-use std::convert::TryFrom as _;
+use core::convert::TryFrom as _;
 
 use serde_attributes::Alias;
 

@@ -4,7 +4,7 @@ use serde::Deserialize;
 use std::net::{IpAddr, Ipv4Addr};
 
 #[test]
-fn std() {
+fn simple() {
     #[derive(Deserialize)]
     struct Foo {
         #[serde(default = "serde_field_default::default_ip_addr")]

@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::Deserialize;
 
 #[test]
-fn chrono() {
+fn simple() {
     #[derive(Deserialize)]
     struct Foo {
         #[serde(default = "serde_field_default::chrono::default_date_time_utc")]

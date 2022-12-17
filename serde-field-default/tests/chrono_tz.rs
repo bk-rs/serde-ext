@@ -4,7 +4,7 @@ use chrono_tz::Tz;
 use serde::{de, Deserialize, Deserializer};
 
 #[test]
-fn chrono_tz() {
+fn simple() {
     #[derive(Deserialize)]
     struct Foo {
         #[serde(

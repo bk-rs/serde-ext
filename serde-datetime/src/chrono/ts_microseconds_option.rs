@@ -58,8 +58,6 @@ impl<'de> de::Visitor<'de> for OptionMicroSecondsTimestampVisitor {
 
 #[cfg(test)]
 mod tests {
-    use std::error::Error;
-
     use chrono::{DateTime, NaiveDate, Utc};
     use serde::{Deserialize, Serialize};
     use serde_json::json;
@@ -67,7 +65,7 @@ mod tests {
     use crate::chrono::ts_microseconds_option;
 
     #[test]
-    fn test_ts_microseconds_option() -> Result<(), Box<dyn Error>> {
+    fn test_ts_microseconds_option() -> Result<(), serde_json::Error> {
         #[derive(Deserialize, Serialize, Debug)]
         struct S {
             #[serde(default, with = "ts_microseconds_option")]
