@@ -2,7 +2,7 @@
 
 extern crate alloc;
 
-use alloc::string::ToString as _;
+use alloc::string::{String, ToString as _};
 
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 

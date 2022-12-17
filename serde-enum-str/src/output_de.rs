@@ -31,13 +31,8 @@ impl ToTokens for InputWrapper {
                     __Other(#r#type),
                 }
             } else {
-                #[cfg(feature = "std")]
                 quote! {
-                    __Other(::std::string::String),
-                }
-                #[cfg(not(feature = "std"))]
-                quote! {
-                    __Other(::alloc::string::String),
+                    __Other(String),
                 }
             }
         } else {
@@ -107,7 +102,7 @@ impl ToTokens for InputWrapper {
             impl ::core::str::FromStr for #impl_ident {
                 type Err = serde::de::value::Error;
 
-                fn from_str(s: &str) -> ::core::result::Result<Self, Self::Err> {
+                fn from_str(s: &::core::primitive::str) -> ::core::result::Result<Self, Self::Err> {
                     use serde::{Deserialize as _, de::IntoDeserializer as _};
 
                     Self::deserialize(s.into_deserializer())
@@ -118,28 +113,18 @@ impl ToTokens for InputWrapper {
 
         //
         let token = quote! {
-            #[cfg(feature = "std")]
-            impl ::core::convert::TryFrom<::std::string::String> for #impl_ident {
+            impl ::core::convert::TryFrom<String> for #impl_ident {
                 type Error = serde::de::value::Error;
 
-                fn try_from(value: ::std::string::String) -> ::core::result::Result<Self, Self::Error> {
-                    value.parse()
-                }
-            }
-            #[cfg(not(feature = "std"))]
-            impl ::core::convert::TryFrom<::alloc::string::String> for #impl_ident {
-                type Error = serde::de::value::Error;
-
-                fn try_from(value: ::alloc::string::String) -> ::core::result::Result<Self, Self::Error> {
+                fn try_from(value: String) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()
                 }
             }
 
-
-            impl ::core::convert::TryFrom<&str> for #impl_ident {
+            impl ::core::convert::TryFrom<&::core::primitive::str> for #impl_ident {
                 type Error = serde::de::value::Error;
 
-                fn try_from(value: &str) -> ::core::result::Result<Self, Self::Error> {
+                fn try_from(value: &::core::primitive::str) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()
                 }
             }
