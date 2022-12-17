@@ -13,7 +13,7 @@ enum Foo {
     #[serde(rename = "B")]
     B,
     #[serde(other)]
-    Other(alloc::string::String),
+    Other(String),
 }
 
 #[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]

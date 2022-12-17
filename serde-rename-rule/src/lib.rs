@@ -4,6 +4,9 @@
 
 extern crate alloc;
 
+use alloc::{format, string::String, vec::Vec};
+
+//
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum RenameRule {
     /// Rename direct children to "lowercase" style.
@@ -57,14 +60,14 @@ impl RenameRule {
     }
 
     /// Apply a renaming rule to an enum variant, returning the version expected in the source.
-    pub fn apply_to_variant(&self, variant: &str) -> alloc::string::String {
+    pub fn apply_to_variant(&self, variant: &str) -> String {
         match *self {
             Self::PascalCase => variant.into(),
             Self::LowerCase => variant.to_ascii_lowercase(),
             Self::UpperCase => variant.to_ascii_uppercase(),
             Self::CamelCase => variant[..1].to_ascii_lowercase() + &variant[1..],
             Self::SnakeCase => {
-                let mut snake = alloc::string::String::new();
+                let mut snake = String::new();
                 for (i, ch) in variant.char_indices() {
                     if i > 0 && ch.is_uppercase() {
                         snake.push('_');
@@ -84,12 +87,12 @@ impl RenameRule {
     }
 
     /// Apply a renaming rule to a struct field, returning the version expected in the source.
-    pub fn apply_to_field(&self, field: &str) -> alloc::string::String {
+    pub fn apply_to_field(&self, field: &str) -> String {
         match *self {
             Self::LowerCase | Self::SnakeCase => field.into(),
             Self::UpperCase => field.to_ascii_uppercase(),
             Self::PascalCase => {
-                let mut pascal = alloc::string::String::new();
+                let mut pascal = String::new();
                 let mut capitalize = true;
                 for ch in field.chars() {
                     if ch == '_' {
@@ -139,19 +142,19 @@ impl core::fmt::Display for RenameRule {
 //
 #[derive(Debug)]
 pub enum ParseError {
-    Unknown(alloc::string::String),
+    Unknown(String),
 }
 
 impl ParseError {
-    pub fn msg_for_rename_all(&self) -> alloc::string::String {
+    pub fn msg_for_rename_all(&self) -> String {
         match self {
-            Self::Unknown(s) => alloc::format!(
+            Self::Unknown(s) => format!(
                 r#"unknown rename rule `rename_all = "{}"`, expected one of {}"#,
                 s,
                 RENAME_RULES
                     .iter()
-                    .map(|(name, _)| alloc::format!(r#""{name}""#))
-                    .collect::<alloc::vec::Vec<_>>()
+                    .map(|(name, _)| format!(r#""{name}""#))
+                    .collect::<Vec<_>>()
                     .join(", ")
             ),
         }
