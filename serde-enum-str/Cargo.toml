@@ -1,6 +1,6 @@
 [package]
 name = "serde-enum-str"
-version = "0.2.5"
+version = "0.3.0"
 authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2021"
 description = "Serialize and deserialize enum string"
