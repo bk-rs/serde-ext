@@ -1,3 +1,5 @@
+#![cfg(feature = "std")]
+
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 
 mod simple {

@@ -31,8 +31,13 @@ impl ToTokens for InputWrapper {
                     __Other(#r#type),
                 }
             } else {
+                #[cfg(feature = "std")]
                 quote! {
-                    __Other(String),
+                    __Other(::std::string::String),
+                }
+                #[cfg(not(feature = "std"))]
+                quote! {
+                    __Other(::alloc::string::String),
                 }
             }
         } else {
@@ -113,13 +118,23 @@ impl ToTokens for InputWrapper {
 
         //
         let token = quote! {
-            impl ::core::convert::TryFrom<String> for #impl_ident {
+            #[cfg(feature = "std")]
+            impl ::core::convert::TryFrom<::std::string::String> for #impl_ident {
                 type Error = serde::de::value::Error;
 
-                fn try_from(value: String) -> ::core::result::Result<Self, Self::Error> {
+                fn try_from(value: ::std::string::String) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()
                 }
             }
+            #[cfg(not(feature = "std"))]
+            impl ::core::convert::TryFrom<::alloc::string::String> for #impl_ident {
+                type Error = serde::de::value::Error;
+
+                fn try_from(value: ::alloc::string::String) -> ::core::result::Result<Self, Self::Error> {
+                    value.parse()
+                }
+            }
+
 
             impl ::core::convert::TryFrom<&str> for #impl_ident {
                 type Error = serde::de::value::Error;

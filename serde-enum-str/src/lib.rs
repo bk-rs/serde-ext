@@ -6,7 +6,7 @@
 //! serde-enum-str = "0.2"
 //! ```
 //!
-//! ```
+//! ```rust,ignore
 //! use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 //!
 //! #[derive(Deserialize_enum_str, Serialize_enum_str, PartialEq, Debug)]

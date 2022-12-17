@@ -4,6 +4,7 @@ members = [
     "serde-aux-ext",
     "serde-datetime",
     "serde-enum-str",
+    "serde-enum-str/demo-no-std",
     "serde-field-default",
     "serde-field-with",
     "serde-rename-rule",
