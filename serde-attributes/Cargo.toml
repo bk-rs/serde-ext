@@ -14,10 +14,12 @@ readme = "README.md"
 rust-version = "1.58.0"
 
 [package.metadata.docs.rs]
-features = [ "all-attrs", "with-syn", "with-darling" ]
+features = [ "std", "all-attrs", "with-syn", "with-darling" ]
 
 [features]
-default = [ "all-attrs", "with-syn" ]
+default = [ "std", "all-attrs", "with-syn" ]
+
+std = []
 
 all-attrs = [ "attr-alias", "attr-rename", "attr-rename-all" ]
 attr-alias = []
@@ -42,11 +44,15 @@ darling = { version = "0.14", default-features = false }
 
 [package.metadata.cargo-all-features]
 skip_feature_sets = [
-    ["with-syn", "with-darling"],
     ["attr-alias", "attr-rename"],
     ["attr-alias", "attr-rename-all"],
     ["attr-alias", "attr-rename", "attr-rename-all"],
+    ["attr-rename", "attr-rename-all"],
     # 
-    ["_integration_tests"],
+    ["with-syn", "with-darling"],
+]
+denylist = [
+    "all-attrs",
+    "_integration_tests"
 ]
 skip_optional_dependencies = true

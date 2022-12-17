@@ -1,5 +1,3 @@
-use std::{convert::TryFrom, error, fmt};
-
 use syn::{Lit, Meta, MetaNameValue, NestedMeta};
 
 use crate::{DESERIALIZE, SERIALIZE};
@@ -78,7 +76,7 @@ impl Rename {
 }
 
 /// [Ref](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/attr.rs#L319-L333)
-impl<'a> TryFrom<&'a Meta> for Rename {
+impl<'a> core::convert::TryFrom<&'a Meta> for Rename {
     type Error = FromMetaError<'a>;
 
     fn try_from(meta: &'a Meta) -> Result<Self, Self::Error> {
@@ -93,8 +91,8 @@ pub enum FromMetaError<'a> {
     NestedMetaPathMismatch(&'a NestedMeta, &'a MetaNameValue),
     AtLeastOneOfSerAndDe,
 }
-impl<'a> fmt::Debug for FromMetaError<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<'a> core::fmt::Debug for FromMetaError<'a> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::MetaTypeOrPathMismatch(_) => write!(f, "MetaTypeOrPathMismatch"),
             Self::LitTypeMismatch(_) => write!(f, "LitTypeMismatch"),
@@ -104,9 +102,10 @@ impl<'a> fmt::Debug for FromMetaError<'a> {
         }
     }
 }
-impl<'a> fmt::Display for FromMetaError<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<'a> core::fmt::Display for FromMetaError<'a> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "{self:?}")
     }
 }
-impl<'a> error::Error for FromMetaError<'a> {}
+#[cfg(feature = "std")]
+impl<'a> std::error::Error for FromMetaError<'a> {}

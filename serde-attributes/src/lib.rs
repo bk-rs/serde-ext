@@ -1,5 +1,8 @@
 //! Serde Attributes. [Extract from](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/attr.rs#L290)
 //!
+#![cfg_attr(not(feature = "std"), no_std)]
+
+extern crate alloc;
 
 #[cfg(feature = "attr-alias")]
 pub mod alias;

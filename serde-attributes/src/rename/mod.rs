@@ -1,5 +1,7 @@
 //! [Official doc](https://serde.rs/container-attrs.html#rename)
 
+use alloc::string::String;
+
 #[cfg(feature = "with-darling")]
 pub mod darling;
 #[cfg(feature = "with-syn")]
@@ -51,39 +53,39 @@ mod tests {
 
     #[test]
     fn test_ser_name_and_de_name() {
-        assert_eq!(Rename::Normal("foo".to_owned()).ser_name(), Some("foo"));
-        assert_eq!(Rename::Normal("foo".to_owned()).de_name(), Some("foo"));
+        assert_eq!(Rename::Normal("foo".into()).ser_name(), Some("foo"));
+        assert_eq!(Rename::Normal("foo".into()).de_name(), Some("foo"));
 
         assert_eq!(
-            Rename::Independent(RenameIndependent::Serialize("ser".to_owned())).ser_name(),
+            Rename::Independent(RenameIndependent::Serialize("ser".into())).ser_name(),
             Some("ser")
         );
         assert_eq!(
-            Rename::Independent(RenameIndependent::Serialize("ser".to_owned())).de_name(),
+            Rename::Independent(RenameIndependent::Serialize("ser".into())).de_name(),
             None
         );
 
         assert_eq!(
-            Rename::Independent(RenameIndependent::Deserialize("de".to_owned())).ser_name(),
+            Rename::Independent(RenameIndependent::Deserialize("de".into())).ser_name(),
             None
         );
         assert_eq!(
-            Rename::Independent(RenameIndependent::Deserialize("de".to_owned())).de_name(),
+            Rename::Independent(RenameIndependent::Deserialize("de".into())).de_name(),
             Some("de")
         );
 
         assert_eq!(
             Rename::Independent(RenameIndependent::Both {
-                serialize: "ser".to_owned(),
-                deserialize: "de".to_owned(),
+                serialize: "ser".into(),
+                deserialize: "de".into(),
             })
             .ser_name(),
             Some("ser")
         );
         assert_eq!(
             Rename::Independent(RenameIndependent::Both {
-                serialize: "ser".to_owned(),
-                deserialize: "de".to_owned(),
+                serialize: "ser".into(),
+                deserialize: "de".into(),
             })
             .de_name(),
             Some("de")
