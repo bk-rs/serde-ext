@@ -2,7 +2,10 @@
 
 extern crate alloc;
 
-use alloc::string::{String, ToString as _};
+use alloc::{
+    boxed::Box,
+    string::{String, ToString as _},
+};
 
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 
@@ -23,7 +26,7 @@ enum Bar {
     #[serde(rename = "B")]
     B,
     #[serde(other)]
-    Other(alloc::boxed::Box<str>),
+    Other(Box<str>),
 }
 
 fn main() -> serde_json::Result<()> {
