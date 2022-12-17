@@ -1,6 +1,5 @@
-use alloc::borrow::ToOwned;
-use alloc::format;
-use alloc::{vec, vec::Vec};
+use alloc::{borrow::ToOwned as _, format, vec, vec::Vec};
+
 use darling::{
     ast::{Data, Fields},
     util::Ignored,
@@ -13,6 +12,7 @@ use syn::{
     Attribute, DeriveInput, Error as SynError, Expr, Generics, Ident, Type, Visibility,
 };
 
+//
 pub struct Input {
     pub ident: Ident,
     pub rename_all: Option<RenameAll>,

@@ -1,9 +1,9 @@
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
-extern crate alloc;
+
 mod simple {
     use super::*;
 
-    use std::convert::TryFrom as _;
+    use core::convert::TryFrom as _;
 
     #[derive(Deserialize_enum_str, Serialize_enum_str, PartialEq, Debug)]
     #[serde(rename_all = "snake_case")]
@@ -157,6 +157,7 @@ mod without_other {
     }
 }
 
+#[cfg(feature = "std")]
 mod with_from_str_other {
     use super::*;
 

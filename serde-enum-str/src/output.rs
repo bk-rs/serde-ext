@@ -1,10 +1,12 @@
 use alloc::vec::Vec;
+
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote, ToTokens, TokenStreamExt as _};
 use syn::Ident;
 
 use super::input::Input;
 
+//
 pub struct SerdeEnum<'a> {
     input: &'a Input,
     category: SerdeEnumCategory,

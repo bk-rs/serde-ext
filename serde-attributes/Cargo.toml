@@ -19,7 +19,7 @@ features = [ "std", "all-attrs", "with-syn", "with-darling" ]
 [features]
 default = [ "std", "all-attrs", "with-syn" ]
 
-std = []
+std = ["serde-rename-rule/std"]
 
 all-attrs = [ "attr-alias", "attr-rename", "attr-rename-all" ]
 attr-alias = []

@@ -1,5 +1,5 @@
-use alloc::string::ToString;
-use alloc::vec::Vec;
+use alloc::{string::ToString as _, vec::Vec};
+
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens, TokenStreamExt as _};
 
@@ -8,6 +8,7 @@ use super::{
     output::{SerdeEnum, SerdeEnumCategory},
 };
 
+//
 pub struct InputWrapper(pub Input);
 
 impl ToTokens for InputWrapper {
