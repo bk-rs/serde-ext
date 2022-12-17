@@ -128,6 +128,7 @@ impl<'a> ToTokens for SerdeEnum<'a> {
                     #serde_rename
                     #serde_alias
                     #serde_skip
+                    #[allow(non_camel_case_types, clippy::all)]
                     #ident,
                 }
             })
@@ -136,7 +137,7 @@ impl<'a> ToTokens for SerdeEnum<'a> {
         let token = quote! {
             #derive_serde
             #serde_rename_all
-            #[allow(dead_code)]
+            #[allow(dead_code, clippy::all)]
             enum #ident {
                 #(#variants)*
             }

@@ -272,3 +272,13 @@ mod with_unit_other {
         assert_eq!(serde_json::from_str::<Foo>(r#""foo""#).unwrap(), Foo::Other);
     }
 }
+
+mod with_attrs {
+    use super::*;
+
+    #[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]
+    enum Foo {
+        #[allow(non_camel_case_types)]
+        ON_HOLD,
+    }
+}
