@@ -6,7 +6,7 @@ use alloc::string::ToString as _;
 
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 
-#[derive(Deserialize_enum_str, Serialize_enum_str, PartialEq, Debug)]
+#[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 enum Foo {
     A,
@@ -14,6 +14,16 @@ enum Foo {
     B,
     #[serde(other)]
     Other(alloc::string::String),
+}
+
+#[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+enum Bar {
+    A,
+    #[serde(rename = "B")]
+    B,
+    #[serde(other)]
+    Other(alloc::boxed::Box<str>),
 }
 
 fn main() -> serde_json::Result<()> {

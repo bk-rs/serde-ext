@@ -2,6 +2,7 @@
 
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 
+#[cfg(test)]
 mod simple {
     use super::*;
 
@@ -103,6 +104,7 @@ mod simple {
     }
 }
 
+#[cfg(test)]
 mod without_rename {
     use super::*;
 
@@ -135,6 +137,7 @@ mod without_rename {
     }
 }
 
+#[cfg(test)]
 mod without_other {
     use super::*;
 
@@ -160,6 +163,7 @@ mod without_other {
 }
 
 #[cfg(feature = "std")]
+#[cfg(test)]
 mod with_from_str_other {
     use super::*;
 
@@ -191,6 +195,7 @@ mod with_from_str_other {
     }
 }
 
+#[cfg(test)]
 mod with_independent_rename_all {
     use super::*;
 
@@ -219,6 +224,7 @@ mod with_independent_rename_all {
     }
 }
 
+#[cfg(test)]
 mod with_independent_rename {
     use super::*;
 
@@ -246,6 +252,7 @@ mod with_independent_rename {
     }
 }
 
+#[cfg(test)]
 mod with_unit_other {
     use super::*;
 
@@ -273,6 +280,7 @@ mod with_unit_other {
     }
 }
 
+#[cfg(test)]
 mod with_attrs {
     use super::*;
 
@@ -280,5 +288,17 @@ mod with_attrs {
     enum Foo {
         #[allow(non_camel_case_types)]
         ON_HOLD,
+    }
+}
+
+#[cfg(test)]
+mod with_box_str {
+    use super::*;
+
+    #[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]
+    enum Foo {
+        A,
+        #[serde(other)]
+        Other(Box<str>),
     }
 }
