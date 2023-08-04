@@ -95,7 +95,7 @@ mod tests {
             ),
         };
         assert_eq!(
-            serde_json::to_value(&s)?,
+            serde_json::to_value(s)?,
             json!({ "time": 1609459200999999_u64 })
         );
 

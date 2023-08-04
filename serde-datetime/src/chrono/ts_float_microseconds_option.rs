@@ -120,7 +120,7 @@ mod tests {
 
         //
         let s = S { time: None };
-        assert_eq!(serde_json::to_value(&s)?, json!({ "time": null }));
+        assert_eq!(serde_json::to_value(s)?, json!({ "time": null }));
 
         let s = S {
             time: Some(DateTime::from_utc(
@@ -132,7 +132,7 @@ mod tests {
             )),
         };
         assert_eq!(
-            serde_json::to_value(&s)?,
+            serde_json::to_value(s)?,
             json!({ "time": 1609459200.999999 })
         );
 
@@ -146,7 +146,7 @@ mod tests {
             )),
         };
         assert_eq!(
-            serde_json::to_value(&s)?,
+            serde_json::to_value(s)?,
             json!({ "time": 1609459200.000000 })
         );
 
@@ -160,7 +160,7 @@ mod tests {
             )),
         };
         assert_eq!(
-            serde_json::to_value(&s)?,
+            serde_json::to_value(s)?,
             json!({ "time": 1609459200.000001 })
         );
 
