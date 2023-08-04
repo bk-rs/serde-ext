@@ -19,16 +19,25 @@ proc-macro = true
 all-features = true
 
 [features]
-default = [ "std" ]
+default = ["std"]
 
 std = ["serde-attributes/std"]
 
 [dependencies]
 proc-macro2 = { version = "1", default-features = false }
 quote = { version = "1", default-features = false }
-syn = { version = "1", default-features = false, features = ["parsing", "proc-macro", "derive"] }
+syn = { version = "1", default-features = false, features = [
+    "parsing",
+    "proc-macro",
+    "derive",
+] }
 darling = { version = "0.14", default-features = false }
-serde-attributes = { version = "0.2", default-features = false, features = ["attr-alias", "attr-rename", "attr-rename-all", "with-darling"], path = "../serde-attributes" }
+serde-attributes = { version = "0.2", default-features = false, features = [
+    "attr-alias",
+    "attr-rename",
+    "attr-rename-all",
+    "with-darling",
+], path = "../serde-attributes" }
 
 [dev-dependencies]
 serde = { version = "1", features = ["derive"] }

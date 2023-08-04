@@ -13,25 +13,28 @@ categories = []
 readme = "README.md"
 
 [package.metadata.docs.rs]
-features = [ "std", "all-attrs", "with-syn", "with-darling" ]
+features = ["std", "all-attrs", "with-syn", "with-darling"]
 
 [features]
-default = [ "std", "all-attrs", "with-syn" ]
+default = ["std", "all-attrs", "with-syn"]
 
 std = ["serde-rename-rule/std"]
 
-all-attrs = [ "attr-alias", "attr-rename", "attr-rename-all" ]
+all-attrs = ["attr-alias", "attr-rename", "attr-rename-all"]
 attr-alias = []
 attr-rename = []
-attr-rename-all = [ "attr-rename", "serde-rename-rule" ]
+attr-rename-all = ["attr-rename", "serde-rename-rule"]
 
-with-syn = [ "syn" ]
-with-darling = [ "with-syn", "darling_core" ]
+with-syn = ["syn"]
+with-darling = ["with-syn", "darling_core"]
 
-_integration_tests = [ "all-attrs", "with-syn", "with-darling" ]
+_integration_tests = ["all-attrs", "with-syn", "with-darling"]
 
 [dependencies]
-syn = { version = "1", default-features = false, features = [ "derive", "parsing" ], optional = true }
+syn = { version = "1", default-features = false, features = [
+    "derive",
+    "parsing",
+], optional = true }
 darling_core = { version = "0.14", default-features = false, optional = true }
 
 # attr-rename-all
@@ -50,8 +53,5 @@ skip_feature_sets = [
     # 
     ["with-syn", "with-darling"],
 ]
-denylist = [
-    "all-attrs",
-    "_integration_tests"
-]
+denylist = ["all-attrs", "_integration_tests"]
 skip_optional_dependencies = true

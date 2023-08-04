@@ -31,6 +31,4 @@ chrono-tz = { version = "0.8" }
 
 [package.metadata.cargo-all-features]
 skip_optional_dependencies = true
-skip_feature_sets = [
-    ["alloc"],
-]
+skip_feature_sets = [["alloc"]]
