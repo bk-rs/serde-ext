@@ -3,8 +3,12 @@ members = [
     "serde-attributes",
     "serde-aux-ext",
     "serde-datetime",
+    # 
     "serde-enum-str",
+    "serde-enum-str/demo-container-attr-crate",
     "serde-enum-str/demo-no-std",
+    "serde-enum-str/demo-utils",
+    # 
     "serde-field-default",
     "serde-field-with",
     "serde-rename-rule",

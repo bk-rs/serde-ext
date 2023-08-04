@@ -32,14 +32,15 @@ impl<'a> SerdeEnum<'a> {
 impl<'a> ToTokens for SerdeEnum<'a> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let input = self.input;
+        let serde_expr = &input.serde_expr;
 
         let derive_serde = match self.category {
-            SerdeEnumCategory::Ser => quote! {
-                #[derive(serde::Serialize)]
-            },
-            SerdeEnumCategory::De => quote! {
-                #[derive(serde::Deserialize)]
-            },
+            SerdeEnumCategory::Ser => {
+                quote!(#[derive(#serde_expr::Serialize)])
+            }
+            SerdeEnumCategory::De => {
+                quote!(#[derive(#serde_expr::Deserialize)])
+            }
         };
         let serde_rename_all = if let Some(rename_all) = &input.rename_all {
             match self.category {
@@ -60,6 +61,11 @@ impl<'a> ToTokens for SerdeEnum<'a> {
                     }
                 }
             }
+        } else {
+            quote!()
+        };
+        let serde_crate = if let Some(crate_str) = &input.crate_str {
+            quote!(#[serde(crate = #crate_str)])
         } else {
             quote!()
         };
@@ -137,6 +143,7 @@ impl<'a> ToTokens for SerdeEnum<'a> {
         let token = quote! {
             #derive_serde
             #serde_rename_all
+            #serde_crate
             #[allow(dead_code, clippy::all)]
             enum #ident {
                 #(#variants)*
