@@ -1,0 +1,8 @@
+[package]
+name = "serde-enum-str-demo-utils"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde-enum-str = { default-features = false, path = ".." }
+serde = { version = "1", features = ["derive"] }

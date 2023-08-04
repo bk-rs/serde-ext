@@ -1,4 +1,4 @@
-use alloc::{borrow::ToOwned as _, format, vec, vec::Vec};
+use alloc::{borrow::ToOwned as _, format, string::String, vec, vec::Vec};
 
 use darling::{
     ast::{Data, Fields},
@@ -16,6 +16,8 @@ use syn::{
 pub struct Input {
     pub ident: Ident,
     pub rename_all: Option<RenameAll>,
+    pub crate_str: Option<String>,
+    pub serde_expr: Expr,
     pub variants: Vec<Variant>,
     pub default_variant: Option<DefaultVariant>,
 }
@@ -48,6 +50,14 @@ impl Parse for Input {
 
         let ident = enum_derive_input.ident;
         let rename_all = enum_derive_input.rename_all;
+        let crate_str = enum_derive_input.crate_;
+        let serde_expr = if let Some(crate_str) = &crate_str {
+            syn::parse_str::<Expr>(crate_str).map_err(|_| {
+                SynError::new(call_site, r#"#[serde(crate = "...")] must be an Expr"#)
+            })?
+        } else {
+            syn::parse_str::<Expr>("serde").expect("")
+        };
 
         let mut variants = vec![];
         let mut default_variant = None;
@@ -87,6 +97,8 @@ impl Parse for Input {
         Ok(Self {
             ident,
             rename_all,
+            crate_str,
+            serde_expr,
             variants,
             default_variant,
         })
@@ -154,6 +166,8 @@ struct EnumDeriveInput {
 
     #[darling(default)]
     rename_all: Option<RenameAll>,
+    #[darling(default, rename = "crate")]
+    crate_: Option<String>,
 }
 
 #[derive(FromVariant, Debug)]

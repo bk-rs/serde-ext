@@ -29,7 +29,10 @@ enum Bar {
     Other(Box<str>),
 }
 
-fn main() -> serde_json::Result<()> {
+fn main() {}
+
+#[test]
+fn simple() {
     assert_eq!(serde_json::to_string(&Foo::A).unwrap(), r#""a""#);
     assert_eq!(serde_json::from_str::<Foo>(r#""a""#).unwrap(), Foo::A);
 
@@ -40,6 +43,4 @@ fn main() -> serde_json::Result<()> {
 
     assert_eq!(Foo::A.to_string(), "a");
     assert_eq!("a".parse::<Foo>().unwrap(), Foo::A);
-
-    Ok(())
 }

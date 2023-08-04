@@ -14,6 +14,7 @@ pub struct InputWrapper(pub Input);
 impl ToTokens for InputWrapper {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let input = &self.0;
+        let serde_expr = &input.serde_expr;
 
         let de_enum = SerdeEnum::new(input, SerdeEnumCategory::De);
         let de_enum_ident = de_enum.ident();
@@ -38,8 +39,14 @@ impl ToTokens for InputWrapper {
         } else {
             quote!()
         };
+        let serde_crate = if let Some(crate_str) = &input.crate_str {
+            quote!(#[serde(crate = #crate_str)])
+        } else {
+            quote!()
+        };
         let token = quote! {
-            #[derive(serde::Deserialize)]
+            #[derive(#serde_expr::Deserialize)]
+            #serde_crate
             #[serde(untagged)]
             enum #de_untagged_enum_ident {
                 __Enum(#de_enum_ident),
@@ -79,11 +86,11 @@ impl ToTokens for InputWrapper {
 
         //
         let token = quote! {
-            impl<'de> serde::Deserialize<'de> for #impl_ident {
+            impl<'de> #serde_expr::Deserialize<'de> for #impl_ident {
                 fn deserialize<D>(deserializer: D) -> ::core::result::Result<Self, D::Error>
-                where D: serde::Deserializer<'de>
+                where D: #serde_expr::Deserializer<'de>
                 {
-                    let value = match <#de_untagged_enum_ident as serde::Deserialize>::deserialize(deserializer)? {
+                    let value = match <#de_untagged_enum_ident as #serde_expr::Deserialize>::deserialize(deserializer)? {
                         #de_untagged_enum_ident::__Enum(e) => match e {
                             #(#impl_variants)*
                         },
@@ -100,10 +107,10 @@ impl ToTokens for InputWrapper {
         let token = quote! {
             // https://docs.serde.rs/serde/de/trait.IntoDeserializer.html
             impl ::core::str::FromStr for #impl_ident {
-                type Err = serde::de::value::Error;
+                type Err = #serde_expr::de::value::Error;
 
                 fn from_str(s: &::core::primitive::str) -> ::core::result::Result<Self, Self::Err> {
-                    use serde::{Deserialize as _, de::IntoDeserializer as _};
+                    use #serde_expr::{Deserialize as _, de::IntoDeserializer as _};
 
                     Self::deserialize(s.into_deserializer())
                 }
@@ -114,7 +121,7 @@ impl ToTokens for InputWrapper {
         //
         let token = quote! {
             impl ::core::convert::TryFrom<String> for #impl_ident {
-                type Error = serde::de::value::Error;
+                type Error = #serde_expr::de::value::Error;
 
                 fn try_from(value: String) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()
@@ -122,7 +129,7 @@ impl ToTokens for InputWrapper {
             }
 
             impl ::core::convert::TryFrom<&::core::primitive::str> for #impl_ident {
-                type Error = serde::de::value::Error;
+                type Error = #serde_expr::de::value::Error;
 
                 fn try_from(value: &::core::primitive::str) -> ::core::result::Result<Self, Self::Error> {
                     value.parse()

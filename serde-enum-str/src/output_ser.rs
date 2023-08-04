@@ -14,6 +14,7 @@ pub struct InputWrapper(pub Input);
 impl ToTokens for InputWrapper {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let input = &self.0;
+        let serde_expr = &input.serde_expr;
 
         let ser_enum = SerdeEnum::new(input, SerdeEnumCategory::Ser);
         let ser_enum_ident = ser_enum.ident();
@@ -41,7 +42,7 @@ impl ToTokens for InputWrapper {
             let ident = &default_variant.ident;
             if default_variant.r#type.is_some() {
                 quote! {
-                    Self::#ident(ref s) => return serde::Serialize::serialize(s, serializer),
+                    Self::#ident(ref s) => return #serde_expr::Serialize::serialize(s, serializer),
                 }
             } else {
                 let mut name = ident.to_string();
@@ -51,7 +52,7 @@ impl ToTokens for InputWrapper {
                     }
                 }
                 quote! {
-                    Self::#ident => return serde::Serialize::serialize(#name, serializer),
+                    Self::#ident => return #serde_expr::Serialize::serialize(#name, serializer),
                 }
             }
         } else {
@@ -59,16 +60,16 @@ impl ToTokens for InputWrapper {
         };
 
         let token = quote! {
-            impl serde::Serialize for #impl_ident {
+            impl #serde_expr::Serialize for #impl_ident {
                 fn serialize<S>(&self, serializer: S) -> ::core::result::Result<S::Ok, S::Error>
                 where
-                    S: serde::Serializer,
+                    S: #serde_expr::Serializer,
                 {
                     let value = match *self {
                         #(#impl_serialize_variants)*
                         #impl_serialize_default_variant
                     };
-                    serde::Serialize::serialize(&value, serializer)
+                    #serde_expr::Serialize::serialize(&value, serializer)
                 }
             }
         };
@@ -122,7 +123,7 @@ impl ToTokens for InputWrapper {
             // https://docs.serde.rs/serde/trait.Serializer.html#foreign-impls
             impl ::core::fmt::Display for #impl_ident {
                 fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-                    use serde::Serialize as _;
+                    use #serde_expr::Serialize as _;
 
                     match *self {
                         #(#impl_display_variants)*
