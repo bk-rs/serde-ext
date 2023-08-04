@@ -2,10 +2,7 @@
 
 extern crate alloc;
 
-use alloc::{
-    boxed::Box,
-    string::{String, ToString as _},
-};
+use alloc::{boxed::Box, string::String};
 
 use serde_enum_str::{Deserialize_enum_str, Serialize_enum_str};
 
@@ -33,6 +30,8 @@ fn main() {}
 
 #[test]
 fn simple() {
+    use alloc::string::ToString as _;
+
     assert_eq!(serde_json::to_string(&Foo::A).unwrap(), r#""a""#);
     assert_eq!(serde_json::from_str::<Foo>(r#""a""#).unwrap(), Foo::A);
 
