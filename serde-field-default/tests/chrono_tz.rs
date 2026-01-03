@@ -1,7 +1,7 @@
 #![cfg(feature = "chrono-tz")]
 
 use chrono_tz::Tz;
-use serde::{de, Deserialize, Deserializer};
+use serde::{Deserialize, Deserializer, de};
 
 #[test]
 fn simple() {

@@ -31,16 +31,20 @@ mod simple {
     fn test_ser() {
         assert_eq!(serde_json::to_string(&Foo::A).unwrap(), r#""a""#);
         assert_eq!(serde_json::to_string(&Foo::B).unwrap(), r#""B""#);
-        assert!(serde_json::to_string(&Foo::C)
-            .err()
-            .unwrap()
-            .to_string()
-            .contains("::C cannot be serialized"));
-        assert!(serde_json::to_string(&Foo::D)
-            .err()
-            .unwrap()
-            .to_string()
-            .contains("::D cannot be serialized"));
+        assert!(
+            serde_json::to_string(&Foo::C)
+                .err()
+                .unwrap()
+                .to_string()
+                .contains("::C cannot be serialized")
+        );
+        assert!(
+            serde_json::to_string(&Foo::D)
+                .err()
+                .unwrap()
+                .to_string()
+                .contains("::D cannot be serialized")
+        );
         assert_eq!(serde_json::to_string(&Foo::E).unwrap(), r#""e""#);
         assert_eq!(
             serde_json::to_string(&Foo::Other("z".to_owned())).unwrap(),

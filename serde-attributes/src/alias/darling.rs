@@ -3,7 +3,7 @@ use core::convert::TryFrom as _;
 use darling_core::{Error as DarlingError, FromMeta};
 use syn::Meta;
 
-use super::{syn::FromMetaError, Alias};
+use super::{Alias, syn::FromMetaError};
 
 impl FromMeta for Alias {
     fn from_meta(meta: &Meta) -> Result<Self, DarlingError> {

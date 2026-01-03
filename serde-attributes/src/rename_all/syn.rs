@@ -1,7 +1,7 @@
 use serde_rename_rule::{ParseError as RenameRuleParseError, RenameRule};
 use syn::{Lit, Meta, MetaNameValue, NestedMeta};
 
-use crate::rename::{syn::FromMetaError as RenameFromMetaError, Rename, RenameIndependent};
+use crate::rename::{Rename, RenameIndependent, syn::FromMetaError as RenameFromMetaError};
 
 use super::{RenameAll, RenameAllIndependent};
 

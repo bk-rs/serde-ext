@@ -6,7 +6,7 @@ mod examples;
 use core::convert::TryFrom as _;
 
 use serde_attributes::{
-    rename_all::serde_rename_rule::RenameRule, RenameAll, RenameAllIndependent,
+    RenameAll, RenameAllIndependent, rename_all::serde_rename_rule::RenameRule,
 };
 
 use super::{parse_darling_rename_all, parse_serde_meta};

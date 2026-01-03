@@ -1,15 +1,15 @@
 use alloc::{borrow::ToOwned as _, format, string::String, vec, vec::Vec};
 
 use darling::{
+    FromDeriveInput, FromVariant,
     ast::{Data, Fields},
     util::Ignored,
-    FromDeriveInput, FromVariant,
 };
 use proc_macro2::Span;
 use serde_attributes::{Alias, Rename, RenameAll};
 use syn::{
-    parse::{Parse, ParseStream},
     Attribute, DeriveInput, Error as SynError, Expr, Generics, Ident, Type, Visibility,
+    parse::{Parse, ParseStream},
 };
 
 //

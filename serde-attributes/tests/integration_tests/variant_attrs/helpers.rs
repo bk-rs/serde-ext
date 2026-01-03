@@ -1,8 +1,8 @@
 use darling::{
-    ast::Data as DarlingData, util::Ignored, Error as DarlingError, FromDeriveInput, FromVariant,
+    Error as DarlingError, FromDeriveInput, FromVariant, ast::Data as DarlingData, util::Ignored,
 };
 use serde_attributes::Alias;
-use syn::{parse_str, Data, DataEnum, DeriveInput, Meta, MetaList, NestedMeta};
+use syn::{Data, DataEnum, DeriveInput, Meta, MetaList, NestedMeta, parse_str};
 
 #[allow(dead_code)]
 pub fn parse_serde_meta(input: &str) -> Meta {

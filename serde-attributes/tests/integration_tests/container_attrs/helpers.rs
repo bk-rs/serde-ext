@@ -1,6 +1,6 @@
 use darling::{Error as DarlingError, FromDeriveInput};
 use serde_attributes::{Rename, RenameAll};
-use syn::{parse_str, DeriveInput, Meta, MetaList, NestedMeta};
+use syn::{DeriveInput, Meta, MetaList, NestedMeta, parse_str};
 
 pub fn parse_serde_meta(input: &str) -> Meta {
     let derive_input = parse_str::<DeriveInput>(input).unwrap();
