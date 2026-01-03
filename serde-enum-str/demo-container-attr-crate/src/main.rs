@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 #[derive(
     serde_enum_str_demo_utils::reexport::serde_enum_str::Deserialize_enum_str,
     serde_enum_str_demo_utils::reexport::serde_enum_str::Serialize_enum_str,

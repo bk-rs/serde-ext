@@ -288,6 +288,7 @@ mod with_unit_other {
 mod with_attrs {
     use super::*;
 
+    #[allow(dead_code)]
     #[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]
     enum Foo {
         #[allow(non_camel_case_types)]
@@ -299,6 +300,7 @@ mod with_attrs {
 mod with_box_str {
     use super::*;
 
+    #[allow(dead_code)]
     #[derive(Deserialize_enum_str, Serialize_enum_str, Debug, PartialEq, Eq)]
     enum Foo {
         A,

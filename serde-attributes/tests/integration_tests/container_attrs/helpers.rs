@@ -1,30 +1,22 @@
 use darling::{Error as DarlingError, FromDeriveInput};
 use serde_attributes::{Rename, RenameAll};
-use syn::{DeriveInput, Meta, MetaList, NestedMeta, parse_str};
+use syn::{DeriveInput, Meta, parse_str};
 
 pub fn parse_serde_meta(input: &str) -> Meta {
     let derive_input = parse_str::<DeriveInput>(input).unwrap();
     let attrs = &derive_input.attrs;
-    match attrs[0].parse_meta().unwrap() {
-        Meta::List(MetaList {
-            path,
-            paren_token: _,
-            nested: _,
-        }) if path.is_ident("derive") => {}
+
+    match &attrs[0].meta {
+        Meta::List(meta_list) if meta_list.path.is_ident("derive") => {}
         meta => {
             println!("{meta:?}");
             panic!()
         }
     }
-    match attrs[1].parse_meta().unwrap() {
-        Meta::List(MetaList {
-            path,
-            paren_token: _,
-            nested,
-        }) if path.is_ident("serde") => match nested.first().cloned() {
-            Some(NestedMeta::Meta(meta)) => meta,
-            _ => panic!(),
-        },
+    match &attrs[1].meta {
+        Meta::List(meta_list) if meta_list.path.is_ident("serde") => {
+            meta_list.parse_args::<Meta>().unwrap()
+        }
         meta => {
             println!("{meta:?}");
             panic!()

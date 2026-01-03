@@ -1,59 +1,46 @@
-use syn::{Lit, Meta, MetaNameValue, NestedMeta};
+use syn::{Error as SynError, Expr, ExprLit, Lit, LitStr, Meta, MetaList};
 
-use crate::{DESERIALIZE, SERIALIZE};
+use crate::symbol::{DESERIALIZE, SERIALIZE, Symbol};
 
 use super::{Rename, RenameIndependent};
 
 /// [Ref](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/symbol.rs#L23)
-pub const RENAME: &str = "rename";
+pub const RENAME: Symbol = Symbol("rename");
 
 impl Rename {
     /// [Ref](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/attr.rs#L319-L333)
-    pub fn try_from_meta<'a>(meta: &'a Meta, path_name: &str) -> Result<Self, FromMetaError<'a>> {
+    pub fn try_from_meta<'a>(meta: &'a Meta, attr_name: Symbol) -> Result<Self, FromMetaError<'a>> {
         match meta {
-            Meta::NameValue(meta_name_value) if meta_name_value.path.is_ident(path_name) => {
-                match &meta_name_value.lit {
-                    Lit::Str(s) => Ok(Self::Normal(s.value())),
-                    lit => Err(FromMetaError::LitTypeMismatch(lit)),
+            Meta::NameValue(meta_name_value) if meta_name_value.path == attr_name => {
+                match &meta_name_value.value {
+                    Expr::Lit(ExprLit {
+                        lit: Lit::Str(lit), ..
+                    }) => Ok(Self::Normal(lit.value())),
+                    expr => Err(FromMetaError::MetaNameValueExprTypeMismatch(expr)),
                 }
             }
-            Meta::List(meta_list) if meta_list.path.is_ident(path_name) => {
+            Meta::List(meta_list) if meta_list.path == attr_name => {
                 let mut ser_name = None;
                 let mut de_name = None;
 
-                for nested_meta in &meta_list.nested {
-                    match nested_meta {
-                        NestedMeta::Meta(Meta::NameValue(meta_name_value)) => {
-                            if meta_name_value.path.is_ident(SERIALIZE) {
-                                match &meta_name_value.lit {
-                                    Lit::Str(s) => ser_name = Some(s.value()),
-                                    _ => {
-                                        return Err(FromMetaError::LitTypeMismatch(
-                                            &meta_name_value.lit,
-                                        ));
-                                    }
-                                }
-                            } else if meta_name_value.path.is_ident(DESERIALIZE) {
-                                match &meta_name_value.lit {
-                                    Lit::Str(s) => de_name = Some(s.value()),
-                                    _ => {
-                                        return Err(FromMetaError::LitTypeMismatch(
-                                            &meta_name_value.lit,
-                                        ));
-                                    }
-                                }
-                            } else {
-                                return Err(FromMetaError::NestedMetaPathMismatch(
-                                    nested_meta,
-                                    meta_name_value,
-                                ));
-                            }
-                        }
-                        nested_meta => {
-                            return Err(FromMetaError::NestedMetaTypeMismatch(nested_meta));
-                        }
+                meta_list.parse_nested_meta(|parse_nested_meta| {
+                    if parse_nested_meta.path == SERIALIZE {
+                        let value = parse_nested_meta.value()?;
+                        let lit: LitStr = value.parse()?;
+                        ser_name = Some(lit.value());
+                    } else if parse_nested_meta.path == DESERIALIZE {
+                        let value = parse_nested_meta.value()?;
+                        let lit: LitStr = value.parse()?;
+                        de_name = Some(lit.value());
+                    } else {
+                        return Err(parse_nested_meta.error(format_args!(
+                            "malformed {0} attribute, expected `{0}(serialize = ..., deserialize = ...)`",
+                            attr_name,
+                        )));
                     }
-                }
+                    Ok(())
+                }).map_err(|err| FromMetaError::MetaListTypeMismatch(meta_list, err))?;
+
                 match (ser_name, de_name) {
                     (None, None) => Err(FromMetaError::AtLeastOneOfSerAndDe),
                     (None, Some(de_name)) => {
@@ -86,18 +73,16 @@ impl<'a> core::convert::TryFrom<&'a Meta> for Rename {
 
 pub enum FromMetaError<'a> {
     MetaTypeOrPathMismatch(&'a Meta),
-    LitTypeMismatch(&'a Lit),
-    NestedMetaTypeMismatch(&'a NestedMeta),
-    NestedMetaPathMismatch(&'a NestedMeta, &'a MetaNameValue),
+    MetaNameValueExprTypeMismatch(&'a Expr),
+    MetaListTypeMismatch(&'a MetaList, SynError),
     AtLeastOneOfSerAndDe,
 }
 impl<'a> core::fmt::Debug for FromMetaError<'a> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::MetaTypeOrPathMismatch(_) => write!(f, "MetaTypeOrPathMismatch"),
-            Self::LitTypeMismatch(_) => write!(f, "LitTypeMismatch"),
-            Self::NestedMetaTypeMismatch(_) => write!(f, "NestedMetaTypeMismatch"),
-            Self::NestedMetaPathMismatch(_, _) => write!(f, "NestedMetaPathMismatch"),
+            Self::MetaNameValueExprTypeMismatch(_) => write!(f, "MetaNameValueExprTypeMismatch"),
+            Self::MetaListTypeMismatch(_, _) => write!(f, "MetaListTypeMismatch"),
             Self::AtLeastOneOfSerAndDe => write!(f, "AtLeastOneOfSerAndDe"),
         }
     }

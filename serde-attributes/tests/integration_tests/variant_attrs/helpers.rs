@@ -2,7 +2,7 @@ use darling::{
     Error as DarlingError, FromDeriveInput, FromVariant, ast::Data as DarlingData, util::Ignored,
 };
 use serde_attributes::Alias;
-use syn::{Data, DataEnum, DeriveInput, Meta, MetaList, NestedMeta, parse_str};
+use syn::{Data, DataEnum, DeriveInput, Meta, parse_str};
 
 #[allow(dead_code)]
 pub fn parse_serde_meta(input: &str) -> Meta {
@@ -12,12 +12,8 @@ pub fn parse_serde_meta(input: &str) -> Meta {
 pub fn parse_serde_meta_list(input: &str) -> Vec<Meta> {
     let derive_input = parse_str::<DeriveInput>(input).unwrap();
     let attrs = &derive_input.attrs;
-    match attrs[0].parse_meta().unwrap() {
-        Meta::List(MetaList {
-            path,
-            paren_token: _,
-            nested: _,
-        }) if path.is_ident("derive") => {}
+    match &attrs[0].meta {
+        Meta::List(meta_list) if meta_list.path.is_ident("derive") => {}
         meta => {
             println!("{meta:?}");
             panic!()
@@ -32,15 +28,10 @@ pub fn parse_serde_meta_list(input: &str) -> Vec<Meta> {
             let attrs = &variants[0].attrs;
             attrs
                 .iter()
-                .map(|attr| match attr.parse_meta().unwrap() {
-                    Meta::List(MetaList {
-                        path,
-                        paren_token: _,
-                        nested,
-                    }) if path.is_ident("serde") => match nested.first().cloned() {
-                        Some(NestedMeta::Meta(meta)) => meta,
-                        _ => panic!(),
-                    },
+                .map(|attr| match &attr.meta {
+                    Meta::List(meta_list) if meta_list.path.is_ident("serde") => {
+                        meta_list.parse_args::<Meta>().unwrap()
+                    }
                     meta => {
                         println!("{meta:?}");
                         panic!()

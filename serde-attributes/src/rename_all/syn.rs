@@ -1,12 +1,15 @@
 use serde_rename_rule::{ParseError as RenameRuleParseError, RenameRule};
-use syn::{Lit, Meta, MetaNameValue, NestedMeta};
+use syn::{Error as SynError, Expr, Meta, MetaList};
 
-use crate::rename::{Rename, RenameIndependent, syn::FromMetaError as RenameFromMetaError};
+use crate::{
+    Symbol,
+    rename::{Rename, RenameIndependent, syn::FromMetaError as RenameFromMetaError},
+};
 
 use super::{RenameAll, RenameAllIndependent};
 
 /// [Ref](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/symbol.rs#L24)
-pub const RENAME_ALL: &str = "rename_all";
+pub const RENAME_ALL: Symbol = Symbol("rename_all");
 
 /// [Ref](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/attr.rs#L335-L364)
 impl<'a> core::convert::TryFrom<&'a Meta> for RenameAll {
@@ -42,15 +45,12 @@ impl<'a> core::convert::TryFrom<&'a Meta> for RenameAll {
                 RenameFromMetaError::MetaTypeOrPathMismatch(meta) => {
                     Err(FromMetaError::MetaTypeOrPathMismatch(meta))
                 }
-                RenameFromMetaError::LitTypeMismatch(lit) => {
-                    Err(FromMetaError::LitTypeMismatch(lit))
+                RenameFromMetaError::MetaNameValueExprTypeMismatch(expr) => {
+                    Err(FromMetaError::MetaNameValueExprTypeMismatch(expr))
                 }
-                RenameFromMetaError::NestedMetaTypeMismatch(nested_meta) => {
-                    Err(FromMetaError::NestedMetaTypeMismatch(nested_meta))
+                RenameFromMetaError::MetaListTypeMismatch(meta_list, err) => {
+                    Err(FromMetaError::MetaListTypeMismatch(meta_list, err))
                 }
-                RenameFromMetaError::NestedMetaPathMismatch(nested_meta, meta_name_value) => Err(
-                    FromMetaError::NestedMetaPathMismatch(nested_meta, meta_name_value),
-                ),
                 RenameFromMetaError::AtLeastOneOfSerAndDe => {
                     Err(FromMetaError::AtLeastOneOfSerAndDe)
                 }
@@ -61,9 +61,8 @@ impl<'a> core::convert::TryFrom<&'a Meta> for RenameAll {
 
 pub enum FromMetaError<'a> {
     MetaTypeOrPathMismatch(&'a Meta),
-    LitTypeMismatch(&'a Lit),
-    NestedMetaTypeMismatch(&'a NestedMeta),
-    NestedMetaPathMismatch(&'a NestedMeta, &'a MetaNameValue),
+    MetaNameValueExprTypeMismatch(&'a Expr),
+    MetaListTypeMismatch(&'a MetaList, SynError),
     AtLeastOneOfSerAndDe,
     RenameRuleParseError(RenameRuleParseError),
 }
@@ -71,9 +70,8 @@ impl<'a> core::fmt::Debug for FromMetaError<'a> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::MetaTypeOrPathMismatch(_) => write!(f, "MetaTypeOrPathMismatch"),
-            Self::LitTypeMismatch(_) => write!(f, "LitTypeMismatch"),
-            Self::NestedMetaTypeMismatch(_) => write!(f, "NestedMetaTypeMismatch"),
-            Self::NestedMetaPathMismatch(_, _) => write!(f, "NestedMetaPathMismatch"),
+            Self::MetaNameValueExprTypeMismatch(_) => write!(f, "MetaNameValueExprTypeMismatch"),
+            Self::MetaListTypeMismatch(_, _) => write!(f, "MetaListTypeMismatch"),
             Self::AtLeastOneOfSerAndDe => write!(f, "AtLeastOneOfSerAndDe"),
             Self::RenameRuleParseError(_) => write!(f, "RenameRuleParseError"),
         }

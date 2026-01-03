@@ -15,7 +15,9 @@ impl FromMeta for Alias {
                     DarlingError::unknown_field_path(&meta_name_value.path)
                 }
             },
-            FromMetaError::LitTypeMismatch(lit) => DarlingError::unexpected_lit_type(lit),
+            FromMetaError::MetaNameValueExprTypeMismatch(expr) => {
+                DarlingError::unexpected_expr_type(expr)
+            }
         })
     }
 }

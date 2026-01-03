@@ -15,12 +15,11 @@ impl FromMeta for RenameAll {
                     DarlingError::unknown_field_path(&meta_name_value.path)
                 }
             },
-            FromMetaError::LitTypeMismatch(lit) => DarlingError::unexpected_lit_type(lit),
-            FromMetaError::NestedMetaTypeMismatch(_) => {
-                DarlingError::unexpected_type("NestedMeta::Meta(!Meta::NameValue)")
+            FromMetaError::MetaNameValueExprTypeMismatch(expr) => {
+                DarlingError::unexpected_expr_type(expr)
             }
-            FromMetaError::NestedMetaPathMismatch(_, meta_name_value) => {
-                DarlingError::unknown_field_path(&meta_name_value.path)
+            FromMetaError::MetaListTypeMismatch(_, _) => {
+                DarlingError::unexpected_type("Meta::List")
             }
             FromMetaError::AtLeastOneOfSerAndDe => {
                 DarlingError::custom("must be at least one the serialize and deserialize")
