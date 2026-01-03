@@ -2,7 +2,7 @@
 name = "serde-field-default"
 version = "0.2.0"
 authors = ["vkill <vkill.net@gmail.com>"]
-edition = "2021"
+edition = "2024"
 description = "Serde field default attribute"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/bk-rs/serde-ext"
