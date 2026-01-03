@@ -85,7 +85,7 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200.999999 }"#)?;
         assert_eq!(
             s.time,
-            Some(DateTime::from_utc(
+            Some(DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 999999)
@@ -97,7 +97,7 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200 }"#)?;
         assert_eq!(
             s.time,
-            Some(DateTime::from_utc(
+            Some(DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 0)
@@ -109,7 +109,7 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200.000001 }"#)?;
         assert_eq!(
             s.time,
-            Some(DateTime::from_utc(
+            Some(DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 1)
@@ -123,7 +123,7 @@ mod tests {
         assert_eq!(serde_json::to_value(s)?, json!({ "time": null }));
 
         let s = S {
-            time: Some(DateTime::from_utc(
+            time: Some(DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 999999)
@@ -137,7 +137,7 @@ mod tests {
         );
 
         let s = S {
-            time: Some(DateTime::from_utc(
+            time: Some(DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 0)
@@ -151,7 +151,7 @@ mod tests {
         );
 
         let s = S {
-            time: Some(DateTime::from_utc(
+            time: Some(DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 1)

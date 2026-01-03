@@ -59,7 +59,7 @@ impl<'de> de::Visitor<'de> for FloatMicroSecondsTimestampVisitor {
             &value,
         )
         .map(|dt| {
-            DateTime::from_utc(
+            DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(dt.year(), dt.month(), dt.day())
                     .expect("")
                     .and_hms_micro_opt(dt.hour(), dt.minute(), dt.second(), dt.nanosecond())
@@ -90,7 +90,7 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200.999999 }"#)?;
         assert_eq!(
             s.time,
-            DateTime::<Utc>::from_utc(
+            DateTime::<Utc>::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 999999)
@@ -102,7 +102,7 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200 }"#)?;
         assert_eq!(
             s.time,
-            DateTime::<Utc>::from_utc(
+            DateTime::<Utc>::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 0)
@@ -114,7 +114,7 @@ mod tests {
         let s: S = serde_json::from_str(r#"{ "time": 1609459200.000001 }"#)?;
         assert_eq!(
             s.time,
-            DateTime::<Utc>::from_utc(
+            DateTime::<Utc>::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 1)
@@ -125,7 +125,7 @@ mod tests {
 
         //
         let s = S {
-            time: DateTime::from_utc(
+            time: DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 999999)
@@ -139,7 +139,7 @@ mod tests {
         );
 
         let s = S {
-            time: DateTime::from_utc(
+            time: DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 0)
@@ -153,7 +153,7 @@ mod tests {
         );
 
         let s = S {
-            time: DateTime::from_utc(
+            time: DateTime::from_naive_utc_and_offset(
                 NaiveDate::from_ymd_opt(2021, 1, 1)
                     .expect("")
                     .and_hms_micro_opt(0, 0, 0, 1)
