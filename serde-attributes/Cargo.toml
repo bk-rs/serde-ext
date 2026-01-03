@@ -1,6 +1,6 @@
 [package]
 name = "serde-attributes"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2024"
 description = "Serde Attributes"
