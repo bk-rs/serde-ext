@@ -1,6 +1,6 @@
 [package]
 name = "serde-enum-str"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2024"
 description = "Serialize and deserialize enum string"
@@ -32,7 +32,7 @@ syn = { version = "2", default-features = false, features = [
     "derive",
 ] }
 darling = { version = "0.23", default-features = false }
-serde-attributes = { version = "0.2", default-features = false, features = [
+serde-attributes = { version = "0.3", default-features = false, features = [
     "attr-alias",
     "attr-rename",
     "attr-rename-all",

@@ -1,6 +1,6 @@
 [package]
 name = "serde-datetime"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2024"
 description = "serde serializer/deserializer for DateTime"
