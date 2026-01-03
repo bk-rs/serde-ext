@@ -13,3 +13,5 @@ members = [
     "serde-field-with",
     "serde-rename-rule",
 ]
+resolver = "2"
+
