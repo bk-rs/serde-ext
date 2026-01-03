@@ -43,5 +43,5 @@ impl<'a> core::fmt::Display for FromMetaError<'a> {
         write!(f, "{self:?}")
     }
 }
-#[cfg(feature = "std")]
-impl<'a> std::error::Error for FromMetaError<'a> {}
+
+impl<'a> core::error::Error for FromMetaError<'a> {}
