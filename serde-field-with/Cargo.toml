@@ -27,7 +27,7 @@ serde = { version = "1", default-features = false }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 
-chrono-tz = { version = "0.8" }
+chrono-tz = { version = "0.10" }
 
 [package.metadata.cargo-all-features]
 skip_optional_dependencies = true
