@@ -13,6 +13,12 @@ cargo test -p serde-field-default --features alloc,chrono,chrono-tz -- --nocaptu
 cargo test -p serde-attributes --features _integration_tests --test integration_tests -- --nocapture
 ```
 
+## Publish
+
+```shell
+cargo publish --workspace
+```
+
 ## Publish order
 
 serde-rename-rule
