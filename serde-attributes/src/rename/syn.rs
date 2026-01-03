@@ -11,13 +11,13 @@ impl Rename {
     /// [Ref](https://github.com/serde-rs/serde/blob/v1.0.127/serde_derive/src/internals/attr.rs#L319-L333)
     pub fn try_from_meta<'a>(meta: &'a Meta, path_name: &str) -> Result<Self, FromMetaError<'a>> {
         match meta {
-            Meta::NameValue(ref meta_name_value) if meta_name_value.path.is_ident(path_name) => {
+            Meta::NameValue(meta_name_value) if meta_name_value.path.is_ident(path_name) => {
                 match &meta_name_value.lit {
-                    Lit::Str(ref s) => Ok(Self::Normal(s.value())),
+                    Lit::Str(s) => Ok(Self::Normal(s.value())),
                     lit => Err(FromMetaError::LitTypeMismatch(lit)),
                 }
             }
-            Meta::List(ref meta_list) if meta_list.path.is_ident(path_name) => {
+            Meta::List(meta_list) if meta_list.path.is_ident(path_name) => {
                 let mut ser_name = None;
                 let mut de_name = None;
 
@@ -26,20 +26,20 @@ impl Rename {
                         NestedMeta::Meta(Meta::NameValue(meta_name_value)) => {
                             if meta_name_value.path.is_ident(SERIALIZE) {
                                 match &meta_name_value.lit {
-                                    Lit::Str(ref s) => ser_name = Some(s.value()),
+                                    Lit::Str(s) => ser_name = Some(s.value()),
                                     _ => {
                                         return Err(FromMetaError::LitTypeMismatch(
                                             &meta_name_value.lit,
-                                        ))
+                                        ));
                                     }
                                 }
                             } else if meta_name_value.path.is_ident(DESERIALIZE) {
                                 match &meta_name_value.lit {
-                                    Lit::Str(ref s) => de_name = Some(s.value()),
+                                    Lit::Str(s) => de_name = Some(s.value()),
                                     _ => {
                                         return Err(FromMetaError::LitTypeMismatch(
                                             &meta_name_value.lit,
-                                        ))
+                                        ));
                                     }
                                 }
                             } else {
@@ -50,7 +50,7 @@ impl Rename {
                             }
                         }
                         nested_meta => {
-                            return Err(FromMetaError::NestedMetaTypeMismatch(nested_meta))
+                            return Err(FromMetaError::NestedMetaTypeMismatch(nested_meta));
                         }
                     }
                 }

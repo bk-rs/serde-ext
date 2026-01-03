@@ -11,9 +11,9 @@ impl<'a> core::convert::TryFrom<&'a Meta> for Alias {
 
     fn try_from(meta: &'a Meta) -> Result<Self, Self::Error> {
         match meta {
-            Meta::NameValue(ref meta_name_value) if meta_name_value.path.is_ident(ALIAS) => {
+            Meta::NameValue(meta_name_value) if meta_name_value.path.is_ident(ALIAS) => {
                 match &meta_name_value.lit {
-                    Lit::Str(ref s) => Ok(Self(s.value())),
+                    Lit::Str(s) => Ok(Self(s.value())),
                     lit => Err(FromMetaError::LitTypeMismatch(lit)),
                 }
             }
