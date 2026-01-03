@@ -5,9 +5,3 @@
 ## Solves
 
 https://stackoverflow.com/questions/57469527
-
-## Dev
-
-```
-cargo expand --verbose --test test
-```
