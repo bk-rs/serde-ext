@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 #[derive(serde::Serialize, serde::Deserialize)]
 pub enum FooA {
     #[serde(alias = "name")]

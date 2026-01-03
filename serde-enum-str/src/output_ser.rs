@@ -46,10 +46,10 @@ impl ToTokens for InputWrapper {
                 }
             } else {
                 let mut name = ident.to_string();
-                if let Some(rename_all) = &input.rename_all {
-                    if let Some(rename_rule) = &rename_all.ser_rule() {
-                        name = rename_rule.apply_to_variant(&name);
-                    }
+                if let Some(rename_all) = &input.rename_all
+                    && let Some(rename_rule) = &rename_all.ser_rule()
+                {
+                    name = rename_rule.apply_to_variant(&name);
                 }
                 quote! {
                     Self::#ident => return #serde_expr::Serialize::serialize(#name, serializer),
@@ -83,10 +83,10 @@ impl ToTokens for InputWrapper {
                 let ident = &variant.ident;
                 if variant.skip_serializing == Some(true) {
                     let mut name = ident.to_string();
-                    if let Some(rename_all) = &input.rename_all {
-                        if let Some(rename_rule) = &rename_all.ser_rule() {
-                            name = rename_rule.apply_to_variant(&name);
-                        }
+                    if let Some(rename_all) = &input.rename_all
+                        && let Some(rename_rule) = &rename_all.ser_rule()
+                    {
+                        name = rename_rule.apply_to_variant(&name);
                     }
                     quote! {
                         Self::#ident => write!(f, "{}", #name),
@@ -106,10 +106,10 @@ impl ToTokens for InputWrapper {
                 }
             } else {
                 let mut name = ident.to_string();
-                if let Some(rename_all) = &input.rename_all {
-                    if let Some(rename_rule) = &rename_all.ser_rule() {
-                        name = rename_rule.apply_to_variant(&name);
-                    }
+                if let Some(rename_all) = &input.rename_all
+                    && let Some(rename_rule) = &rename_all.ser_rule()
+                {
+                    name = rename_rule.apply_to_variant(&name);
                 }
                 quote! {
                     Self::#ident => write!(f, "{}", #name),

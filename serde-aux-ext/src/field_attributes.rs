@@ -13,8 +13,6 @@ pub fn deserialize_option_bool_from_anything<'de, D>(
 where
     D: Deserializer<'de>,
 {
-    use core::f64::EPSILON;
-
     #[derive(Deserialize)]
     #[serde(untagged)]
     enum AnythingOrBoolOrNull {
@@ -33,7 +31,7 @@ where
             _ => Err(serde::de::Error::custom("The number is neither 1 nor 0")),
         },
         AnythingOrBoolOrNull::Float(f) => {
-            if (f - 1.0f64).abs() < EPSILON {
+            if (f - 1.0f64).abs() < f64::EPSILON {
                 Ok(Some(true))
             } else if f == 0.0f64 {
                 Ok(Some(false))
@@ -53,7 +51,7 @@ where
                     _ => Err(serde::de::Error::custom("The number is neither 1 nor 0")),
                 }
             } else if let Ok(f) = string.parse::<f64>() {
-                if (f - 1.0f64).abs() < EPSILON {
+                if (f - 1.0f64).abs() < f64::EPSILON {
                     Ok(Some(true))
                 } else if f == 0.0f64 {
                     Ok(Some(false))

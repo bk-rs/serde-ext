@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 #[derive(serde::Serialize, serde::Deserialize)]
 #[serde(rename = "name")]
 pub struct FooA {}
